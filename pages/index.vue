@@ -1,6 +1,6 @@
 <template>
   <div>
-    <video id="video" muted loop />
+    <iframe id="video" frameborder="0" allow="autoplay" allowfullscreen></iframe>
 
     <div class="videos">
       <v-hover v-for="(video, index) in videos" v-slot="{ hover }" :key="index">
@@ -31,22 +31,22 @@ export default {
         {
           name: 'Birds',
           imageSrc: require('~/assets/images/birds.png'),
-          videoSrc: require('~/assets/videos/birds.mp4')
+          videoSrc: 'https://www.youtube.com/embed/Nmmsl2X_--U?controls=0&autoplay=1&loop=1&amp;start=500'
         },
         {
           name: 'Fire',
           imageSrc: require('~/assets/images/bonfire.png'),
-          videoSrc: require('~/assets/videos/bonfire.mp4')
+          videoSrc: 'https://www.youtube.com/embed/bbLDfueL7eU?controls=0&autoplay=1&loop=1&amp;start=500'
         },
         {
           name: 'Wave',
           imageSrc: require('~/assets/images/ocean-waves.png'),
-          videoSrc: require('~/assets/videos/ocean-waves.mp4')
+          videoSrc: 'https://www.youtube.com/embed/bn9F19Hi1Lk?controls=0&autoplay=1&loop=1&amp;start=500'
         },
         {
           name: 'Rain',
           imageSrc: require('~/assets/images/heavy-rain.png'),
-          videoSrc: require('~/assets/videos/heavy-rain.mp4')
+          videoSrc: 'https://www.youtube.com/embed/-uwPACnBMVc?controls=0&autoplay=1&loop=1&amp;start=500'
         }
       ]
     }
@@ -56,17 +56,13 @@ export default {
       this.isPlaying = true
       const videoElement = document.getElementById('video')
       videoElement.setAttribute('src', src)
-      setTimeout(() => {
-        const videoElement = document.getElementById('video')
-        videoElement.classList.add('display')
-        videoElement.play()
-      }, 1000)
+      videoElement.classList.add('display')
     },
     pauseVideo() {
       this.isPlaying = false
       const videoElement = document.getElementById('video')
+      videoElement.setAttribute('src', '')
       videoElement.classList.remove('display')
-      videoElement.pause()
     },
     selectVideo(video) {
       this.isPlaying ? this.pauseVideo() : this.playVideo(video.videoSrc)
@@ -81,6 +77,7 @@ export default {
   right: 0;
   bottom: 0;
   width: 100%;
+  height: 100%;
   opacity: 0;
   transition: opacity 0.5s linear;
   &.display {
