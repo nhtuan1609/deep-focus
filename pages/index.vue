@@ -1,6 +1,7 @@
 <template>
   <div>
-    <iframe id="video" frameborder="0" allow="autoplay" allowfullscreen></iframe>
+    <iframe id="video" frameborder="0" allow="autoplay"></iframe>
+    <div id="video-modal"></div>
 
     <div class="videos">
       <v-hover v-for="(video, index) in videos" v-slot="{ hover }" :key="index">
@@ -56,7 +57,10 @@ export default {
       this.isPlaying = true
       const videoElement = document.getElementById('video')
       videoElement.setAttribute('src', src)
-      videoElement.classList.add('display')
+      setTimeout(() => {
+        const videoElement = document.getElementById('video')
+        videoElement.classList.add('display')
+      }, 5000)
     },
     pauseVideo() {
       this.isPlaying = false
@@ -74,8 +78,8 @@ export default {
 <style lang="scss" scoped>
 #video {
   position: fixed;
-  right: 0;
-  bottom: 0;
+  top: 0;
+  left: 0;
   width: 100%;
   height: 100%;
   opacity: 0;
@@ -83,6 +87,14 @@ export default {
   &.display {
     opacity: 1;
   }
+}
+
+#video-modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
 }
 
 .videos {
