@@ -3,12 +3,16 @@
     <iframe id="video" frameborder="0" allow="autoplay"></iframe>
     <div id="video-modal"></div>
 
-    <div class="videos">
+    <v-btn class="button__dashboard" light large icon color="#333" elevation="2" @click="isShowVideos = !isShowVideos">
+      <v-icon>mdi-view-dashboard</v-icon>
+    </v-btn>
+
+    <div v-if="isShowVideos" class="videos">
       <v-hover v-for="(video, index) in videos" v-slot="{ hover }" :key="index">
         <v-card
           light
           :elevation="hover ? 6 : 1"
-          :class="['videos__item', { 'on-hover': hover }]"
+          :class="['videos__item', { 'on-hover': hover }, { selected: video.name === selectedVideo.name }]"
           @click="selectVideo(video)"
         >
           <v-img :src="video.imageSrc" :alt="video.name" :max-width="200"></v-img>
@@ -23,7 +27,9 @@ export default {
   name: 'HomePage',
   data() {
     return {
-      isPlaying: false
+      isPlaying: false,
+      isShowVideos: true,
+      selectedVideo: {}
     }
   },
   computed: {
@@ -53,13 +59,14 @@ export default {
     }
   },
   methods: {
-    playVideo(src) {
+    playVideo() {
       this.isPlaying = true
       const videoElement = document.getElementById('video')
-      videoElement.setAttribute('src', src)
+      videoElement.setAttribute('src', this.selectedVideo.videoSrc)
       setTimeout(() => {
         const videoElement = document.getElementById('video')
         videoElement.classList.add('display')
+        this.isShowVideos = false
       }, 5000)
     },
     pauseVideo() {
@@ -69,7 +76,13 @@ export default {
       videoElement.classList.remove('display')
     },
     selectVideo(video) {
-      this.isPlaying ? this.pauseVideo() : this.playVideo(video.videoSrc)
+      if (video.name === this.selectedVideo.name) {
+        this.selectedVideo = {}
+        this.pauseVideo()
+      } else {
+        this.selectedVideo = video
+        this.playVideo()
+      }
     }
   }
 }
@@ -97,6 +110,12 @@ export default {
   height: 100%;
 }
 
+.button__dashboard {
+  position: fixed;
+  top: 12px;
+  right: 12px;
+}
+
 .videos {
   width: 100%;
   display: flex;
@@ -112,6 +131,10 @@ export default {
 
     &:not(.on-hover) {
       opacity: 0.7;
+    }
+
+    &.selected {
+      background-color: #777;
     }
   }
 }
