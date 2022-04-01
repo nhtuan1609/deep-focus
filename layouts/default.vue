@@ -14,13 +14,15 @@ export default {
 }
 </script>
 
-<style lang="scss" scoped>
+<style lang="scss">
 :root {
   --color-background: #f5f5f5;
 }
+</style>
 
+<style lang="scss" scoped>
 .v-application {
-  background-color: var(--color-background);
+  background-color: var(--color-background) !important;
 }
 
 .container {

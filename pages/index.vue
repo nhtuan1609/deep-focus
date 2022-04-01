@@ -1,7 +1,7 @@
 <template>
   <div>
     <iframe id="video" frameborder="0" allow="autoplay"></iframe>
-    <div id="video-modal"></div>
+    <div class="video__modal"></div>
 
     <v-btn class="button__dashboard" light large icon color="#333" elevation="2" @click="isShowVideos = !isShowVideos">
       <v-icon>mdi-view-dashboard</v-icon>
@@ -19,6 +19,14 @@
         </v-card>
       </v-hover>
     </div>
+
+    <div v-if="isLoading" class="loading__modal">
+      <v-progress-linear :value="loadingProgress" color="blue-grey" height="16">
+        <template #default="{ value }">
+          <strong>{{ Math.ceil(value) }}%</strong>
+        </template>
+      </v-progress-linear>
+    </div>
   </div>
 </template>
 
@@ -29,7 +37,10 @@ export default {
     return {
       isPlaying: false,
       isShowVideos: true,
-      selectedVideo: {}
+      selectedVideo: {},
+      isLoading: false,
+      loadingProgress: 0,
+      loadingInterval: undefined
     }
   },
   computed: {
@@ -58,16 +69,24 @@ export default {
       ]
     }
   },
+  watch: {
+    loadingProgress() {
+      if (this.loadingProgress < 100) return
+      this.isLoading = false
+      this.loadingProgress = 0
+      clearInterval(this.loadingInterval)
+
+      const videoElement = document.getElementById('video')
+      videoElement.classList.add('display')
+      this.isShowVideos = false
+    }
+  },
   methods: {
     playVideo() {
       this.isPlaying = true
       const videoElement = document.getElementById('video')
       videoElement.setAttribute('src', this.selectedVideo.videoSrc)
-      setTimeout(() => {
-        const videoElement = document.getElementById('video')
-        videoElement.classList.add('display')
-        this.isShowVideos = false
-      }, 5000)
+      this.startLoading()
     },
     pauseVideo() {
       this.isPlaying = false
@@ -83,6 +102,13 @@ export default {
         this.selectedVideo = video
         this.playVideo()
       }
+    },
+    startLoading() {
+      this.loadingProgress = 0
+      this.isLoading = true
+      this.loadingInterval = setInterval(() => {
+        this.loadingProgress++
+      }, 100)
     }
   }
 }
@@ -102,7 +128,7 @@ export default {
   }
 }
 
-#video-modal {
+.video__modal {
   position: fixed;
   top: 0;
   left: 0;
@@ -137,5 +163,17 @@ export default {
       background-color: #777;
     }
   }
+}
+
+.loading__modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  padding: 32px;
+  background-color: var(--color-background);
 }
 </style>
