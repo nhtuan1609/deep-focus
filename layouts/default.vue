@@ -17,20 +17,10 @@ export default {
 <style lang="scss">
 :root {
   --color-background: #f5f5f5;
+  --color-text: #333;
 }
-</style>
 
-<style lang="scss" scoped>
 .v-application {
   background-color: var(--color-background) !important;
-}
-
-.container {
-  width: 100%;
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
 }
 </style>
