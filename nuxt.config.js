@@ -1,5 +1,3 @@
-import colors from 'vuetify/es5/util/colors'
-
 export default {
   // Disable server-side rendering: https://go.nuxtjs.dev/ssr-mode
   ssr: false,
@@ -45,15 +43,25 @@ export default {
     customVariables: ['~/assets/variables.scss'],
     theme: {
       dark: true,
+      options: {
+        customProperties: true
+      },
       themes: {
         dark: {
-          primary: colors.blue.darken2,
-          accent: colors.grey.darken3,
-          secondary: colors.amber.darken3,
-          info: colors.teal.lighten1,
-          warning: colors.amber.base,
-          error: colors.deepOrange.accent4,
-          success: colors.green.accent3
+          primary: '#60a3bc',
+          primaryDark: '#3c6382',
+          secondary: '#82ccdd',
+          _primary: '#60a3bc',
+          _secondary: '#2f3C4e',
+          _accent: '#fca311',
+          _base: '#f5f5f5',
+          _white: '#ffffff',
+          _text: '#191a1a',
+          _success: '#43a047',
+          _warning: '#ff9800',
+          _error: '#d32f2f',
+          _clickable: '#0654ba',
+          _hightLight: '#fffde7'
         }
       }
     }

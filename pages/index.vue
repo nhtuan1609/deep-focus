@@ -1,53 +1,61 @@
 <template>
   <div>
-    <div class="sound__list selected">
-      <v-hover v-for="(sound, index) in selectedSounds" v-slot="{ hover }" :key="index">
-        <v-tooltip bottom>
-          <template #activator="{ on, attrs }">
-            <v-card
-              light
-              :elevation="hover ? 6 : 1"
-              :class="['sound__item', { 'on-hover': hover }]"
-              v-bind="attrs"
-              v-on="on"
-              @click="removeSound(sound)"
-            >
-              <v-img :src="sound.imageSrc" :alt="sound.name" :max-width="50"></v-img>
-            </v-card>
-          </template>
-          <span>{{ sound.name }}</span>
-        </v-tooltip>
-      </v-hover>
+    <v-tooltip left>
+      <template #activator="{ on }">
+        <v-btn color="var(--color-text)" absolute top right large icon v-on="on" @click="toggleDarkMode">
+          <v-icon v-if="isDarkMode">mdi-white-balance-sunny</v-icon>
+          <v-icon v-else>mdi-moon-waning-crescent</v-icon>
+        </v-btn>
+      </template>
+      <span v-if="isDarkMode">Light Mode</span>
+      <span v-else>Dark Mode</span>
+    </v-tooltip>
+
+    <div v-if="!!selectedSounds.length" class="sound__list selected">
+      <v-tooltip v-for="(sound, index) in selectedSounds" :key="index" bottom>
+        <template #activator="{ on, value: hover }">
+          <v-card
+            color="var(--color-card)"
+            :elevation="hover ? 6 : 1"
+            :class="['sound__item', { 'dark-mode': isDarkMode }, { 'on-hover': hover }]"
+            v-on="on"
+            @click="removeSound(sound)"
+          >
+            <v-img :src="sound.imageSrc" :alt="sound.name" :max-width="50"></v-img>
+          </v-card>
+        </template>
+        <span>{{ sound.name }}</span>
+      </v-tooltip>
     </div>
 
     <div class="sound__list">
-      <v-hover v-for="(sound, index) in sounds" v-slot="{ hover }" :key="index">
-        <v-tooltip bottom>
-          <template #activator="{ on, attrs }">
-            <v-card
-              light
-              :elevation="hover ? 6 : 1"
-              :class="['sound__item', { 'on-hover': hover }]"
-              :disabled="!!selectedSounds.find((item) => item.id === sound.id)"
-              v-bind="attrs"
-              v-on="on"
-              @click="addSound(sound)"
-            >
-              <v-img :src="sound.imageSrc" :alt="sound.name" :max-width="100"></v-img>
-            </v-card>
-          </template>
-          <span>{{ sound.name }}</span>
-        </v-tooltip>
-      </v-hover>
+      <v-tooltip v-for="(sound, index) in sounds" :key="index" bottom>
+        <template #activator="{ on, value: hover }">
+          <v-card
+            color="var(--color-card)"
+            :elevation="hover ? 6 : 1"
+            :class="['sound__item', { 'dark-mode': isDarkMode }, { 'on-hover': hover }]"
+            :disabled="!!selectedSounds.find((item) => item.id === sound.id)"
+            v-on="on"
+            @click="addSound(sound)"
+          >
+            <v-img :src="sound.imageSrc" :alt="sound.name" :max-width="100"></v-img>
+          </v-card>
+        </template>
+        <span>{{ sound.name }}</span>
+      </v-tooltip>
     </div>
   </div>
 </template>
 
 <script>
+import { THEME } from '~/constants/theme.js'
+
 export default {
   name: 'HomePage',
   data() {
     return {
+      isDarkMode: false,
       selectedSounds: []
     }
   },
@@ -141,12 +149,31 @@ export default {
     }
   },
   methods: {
+    /**
+     * add selected sound to the selected sound list
+     * @param {object} sound - sound information
+     * @return {void}
+     */
     addSound(sound) {
       this.selectedSounds.push(sound)
     },
+    /**
+     * remove selected sound out the selected sound list
+     * @param {object} sound - sound information
+     * @return {void}
+     */
     removeSound(sound) {
       const index = this.selectedSounds.findIndex((item) => item.id === sound.id)
       this.selectedSounds.splice(index, 1)
+    },
+    /**
+     * change to dark mode or light mode
+     * @return {void}
+     */
+    toggleDarkMode() {
+      const color = this.isDarkMode ? { ...THEME.LIGHT } : { ...THEME.DARK }
+      this.$store.dispatch('preferences/updateColor', { color })
+      this.isDarkMode = !this.isDarkMode
     }
   }
 }
@@ -160,11 +187,10 @@ export default {
     flex-wrap: wrap;
     justify-content: center;
     gap: 32px;
+    margin: 100px 0;
 
     &.selected {
-      min-height: 80px;
       gap: 16px;
-      margin-bottom: 100px;
     }
   }
 
