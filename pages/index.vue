@@ -40,6 +40,9 @@
             @click="addSound(sound)"
           >
             <v-img :src="sound.imageSrc" :alt="sound.name" :max-width="100"></v-img>
+            <audio :id="`player-${index}`" loop>
+              <source :src="sound.soundSrc" />
+            </audio>
           </v-card>
         </template>
         <span>{{ sound.name }}</span>
@@ -65,82 +68,82 @@ export default {
         {
           name: 'Bonfire',
           imageSrc: require('~/assets/images/bonfire.png'),
-          soundSrc: ''
+          soundSrc: 'https://docs.google.com/uc?export=download&id=1KgjpOG5vwdCMciA_EVnylwHMrI0jYcgs'
         },
         {
           name: 'Ocean Waves',
           imageSrc: require('~/assets/images/ocean-waves.png'),
-          soundSrc: ''
+          soundSrc: 'https://docs.google.com/uc?export=download&id=1TlCAunirg2kFwx88u_FdjJDB67TL-hV6'
         },
         {
           name: 'Heavy Rain',
           imageSrc: require('~/assets/images/heavy-rain.png'),
-          soundSrc: ''
+          soundSrc: 'https://docs.google.com/uc?export=download&id=1GiAvkjwLxMXdmZ2HCxr1g9ekr94zkenC'
         },
         {
           name: 'Thunder',
           imageSrc: require('~/assets/images/thunder.png'),
-          soundSrc: ''
+          soundSrc: 'https://docs.google.com/uc?export=download&id=10go94SC2jS71hNa4SJ126-AF3Y7trqSc'
         },
         {
           name: 'Wind',
           imageSrc: require('~/assets/images/wind.png'),
-          soundSrc: ''
+          soundSrc: 'https://docs.google.com/uc?export=download&id=1ivctAolnWpE8f4EPswSkKDHQ6BmXHbZU'
         },
         {
           name: 'Waterfall',
           imageSrc: require('~/assets/images/waterfall.png'),
-          soundSrc: ''
+          soundSrc: 'https://docs.google.com/uc?export=download&id=1XcemX8FsuVxdqATPUwEJLr7hIB2CB76a'
         },
         {
           name: 'Birds',
           imageSrc: require('~/assets/images/birds.png'),
-          soundSrc: ''
+          soundSrc: 'https://docs.google.com/uc?export=download&id=1udgu1AO4xv6n_5Di1noN1BrMpKUIBRW7'
         },
         {
           name: 'Frogs',
           imageSrc: require('~/assets/images/frogs.png'),
-          soundSrc: ''
+          soundSrc: 'https://docs.google.com/uc?export=download&id=1pMKQyKOh9-uzA2HtUCLt8m-X4Zr2t2sK'
         },
         {
           name: 'Chimes',
           imageSrc: require('~/assets/images/chimes.png'),
-          soundSrc: ''
+          soundSrc: 'https://docs.google.com/uc?export=download&id=1zZYnZuZL610Sfh6xuQQ2_xqB-3bh6wkb'
         },
         {
           name: 'Sleeping',
           imageSrc: require('~/assets/images/sleeping.png'),
-          soundSrc: ''
+          soundSrc: 'https://docs.google.com/uc?export=download&id=1ZFLfZLrLVHq5-aUinz_a_hKQasH9ffan'
         },
         {
           name: 'Coffee House',
           imageSrc: require('~/assets/images/coffee-house.png'),
-          soundSrc: ''
+          soundSrc: 'https://docs.google.com/uc?export=download&id=1fSCEyhfIxNoBB7j4pqQ8o_Bap2RqGXIX'
         },
         {
           name: 'Cooking',
           imageSrc: require('~/assets/images/cooking.png'),
-          soundSrc: ''
+          soundSrc: 'https://docs.google.com/uc?export=download&id=197u6_P-naEiHBMVG9FNl-kwgWbnYmVWL'
         },
         {
           name: 'Market',
           imageSrc: require('~/assets/images/market.png'),
-          soundSrc: ''
+          soundSrc: 'https://docs.google.com/uc?export=download&id=1S0z-2G4NeXCn-Ac2PZwejiROKAcJDltC'
         },
         {
           name: 'Piano',
           imageSrc: require('~/assets/images/piano.png'),
-          soundSrc: ''
+          soundSrc: 'https://docs.google.com/uc?export=download&id=1BCdhLOywPuWfuxt30T76ny7cH0sfD_dH'
         },
         {
           name: 'Yoga',
           imageSrc: require('~/assets/images/yoga.png'),
-          soundSrc: ''
+          soundSrc: 'https://docs.google.com/uc?export=download&id=1Vm6wLQzl1gAWr4s0SuxxZWGh3vbU03U-'
         },
         {
           name: 'Coding',
           imageSrc: require('~/assets/images/coding.png'),
-          soundSrc: ''
+          soundSrc: 'https://docs.google.com/uc?export=download&id=1vBQVNcd17CxHfN8oRc4cPMrx_mJrKsKS'
         }
       ]
       return soundList.map((sound, index) => {
@@ -156,6 +159,8 @@ export default {
      */
     addSound(sound) {
       this.selectedSounds.push(sound)
+
+      document.getElementById(`player-${sound.id}`).play()
     },
     /**
      * remove selected sound out the selected sound list
@@ -165,6 +170,10 @@ export default {
     removeSound(sound) {
       const index = this.selectedSounds.findIndex((item) => item.id === sound.id)
       this.selectedSounds.splice(index, 1)
+
+      const player = document.getElementById(`player-${sound.id}`)
+      player.pause()
+      player.currentTime = 0
     },
     /**
      * change to dark mode or light mode
