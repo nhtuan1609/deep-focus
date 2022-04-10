@@ -131,11 +131,6 @@ export default {
           soundSrc: 'https://docs.google.com/uc?export=download&id=1S0z-2G4NeXCn-Ac2PZwejiROKAcJDltC'
         },
         {
-          name: 'Piano',
-          imageSrc: require('~/assets/images/piano.png'),
-          soundSrc: 'https://docs.google.com/uc?export=download&id=1BCdhLOywPuWfuxt30T76ny7cH0sfD_dH'
-        },
-        {
           name: 'Yoga',
           imageSrc: require('~/assets/images/yoga.png'),
           soundSrc: 'https://docs.google.com/uc?export=download&id=1Vm6wLQzl1gAWr4s0SuxxZWGh3vbU03U-'
@@ -144,6 +139,51 @@ export default {
           name: 'Coding',
           imageSrc: require('~/assets/images/coding.png'),
           soundSrc: 'https://docs.google.com/uc?export=download&id=1vBQVNcd17CxHfN8oRc4cPMrx_mJrKsKS'
+        },
+        {
+          name: 'Piano',
+          imageSrc: require('~/assets/images/piano.png'),
+          soundSrc: 'https://docs.google.com/uc?export=download&id=1BCdhLOywPuWfuxt30T76ny7cH0sfD_dH'
+        },
+        {
+          name: 'flute',
+          imageSrc: require('~/assets/images/flute.png'),
+          soundSrc: 'https://docs.google.com/uc?export=download&id=1d37tSI07zBAqwsu0FopvdfaaiMHgY-uC'
+        },
+        {
+          name: 'Guitar',
+          imageSrc: require('~/assets/images/guitar.png'),
+          soundSrc: 'https://docs.google.com/uc?export=download&id=1xpGZGFeD5onhhvBhfUsJVS9sFKG-4Oxl'
+        },
+        {
+          name: 'Jazz',
+          imageSrc: require('~/assets/images/jazz.png'),
+          soundSrc: 'https://docs.google.com/uc?export=download&id=1w20Idz6ELZ838o1j94YbkABNcqasNeX3'
+        },
+        {
+          name: 'Disc Player',
+          imageSrc: require('~/assets/images/disc-player.png'),
+          soundSrc: 'https://docs.google.com/uc?export=download&id=10CyiiYqvadI50i3HzC2S76O-pUMBBeLR'
+        },
+        {
+          name: 'Beatbox',
+          imageSrc: require('~/assets/images/beatbox.png'),
+          soundSrc: 'https://docs.google.com/uc?export=download&id=11stXdybAZy2lllhGmjnypvNGJrh_ncV9'
+        },
+        {
+          name: 'EDM',
+          imageSrc: require('~/assets/images/edm.png'),
+          soundSrc: 'https://docs.google.com/uc?export=download&id=1tCQWTlUFsqDIbGcAT8UiCEPexeSVxovT'
+        },
+        {
+          name: 'Opera',
+          imageSrc: require('~/assets/images/opera.png'),
+          soundSrc: 'https://docs.google.com/uc?export=download&id=16gxd6fBa8pnCF22wCz0FqJAintjjtILB'
+        },
+        {
+          name: 'Theater',
+          imageSrc: require('~/assets/images/theater.png'),
+          soundSrc: 'https://docs.google.com/uc?export=download&id=15sXNZlki9RZrg5C2S1Y3TVLkLHZgRpjj'
         }
       ]
       return soundList.map((sound, index) => {
