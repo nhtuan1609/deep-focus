@@ -21,7 +21,7 @@
             v-on="on"
             @click="removeSound(sound)"
           >
-            <v-img :src="sound.imageSrc" :alt="sound.name" :max-width="50"></v-img>
+            <v-img :src="sound.imageSrc" :alt="sound.name" width="50" aspect-ratio="1"></v-img>
           </v-card>
         </template>
         <span>{{ sound.name }}</span>
@@ -39,7 +39,7 @@
             v-on="on"
             @click="addSound(sound)"
           >
-            <v-img :src="sound.imageSrc" :alt="sound.name" :max-width="100"></v-img>
+            <v-img :src="sound.imageSrc" :alt="sound.name" width="100" aspect-ratio="1"></v-img>
             <audio :id="`player-${index}`" loop>
               <source :src="sound.soundSrc" />
             </audio>
