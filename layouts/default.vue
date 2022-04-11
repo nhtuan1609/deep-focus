@@ -55,6 +55,11 @@ export default {
   --color-card: var(--v-_white-base);
   --color-shadow: var(--v-_text-darken4);
   --color-disabled: var(--v-_base-base);
+  --color-border: var(--v-_text-lighten5);
+}
+
+* {
+  color: var(--color-text);
 }
 
 html {

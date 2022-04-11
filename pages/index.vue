@@ -54,13 +54,13 @@
 
     <!-- confirm continue play dialog-->
     <v-dialog v-model="isShowConfirmPlaySelectedSoundsDialog" width="500" persistent>
-      <v-card>
+      <v-card color="var(--color-card)">
         <v-card-title class="text-h5">Confirm Dialog</v-card-title>
-        <v-card-text>Would you like to continue play selected sound list?</v-card-text>
-        <v-divider></v-divider>
+        <v-card-text style="color: var(--color-text)">Would you like to continue play selected sound list?</v-card-text>
+        <v-divider style="border-color: var(--color-border)"></v-divider>
         <v-card-actions>
           <v-spacer></v-spacer>
-          <v-btn text @click="rejectPlaySelectedSounds">Reject</v-btn>
+          <v-btn color="var(--color-text)" text @click="rejectPlaySelectedSounds">Reject</v-btn>
           <v-btn color="success" text @click="acceptPlaySelectedSounds">Accept</v-btn>
         </v-card-actions>
       </v-card>
