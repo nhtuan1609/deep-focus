@@ -58,10 +58,6 @@ export default {
   --color-border: var(--v-_text-lighten5);
 }
 
-* {
-  color: var(--color-text);
-}
-
 html {
   overflow-y: auto;
 }

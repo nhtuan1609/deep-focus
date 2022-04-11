@@ -55,7 +55,7 @@
     <!-- confirm continue play dialog-->
     <v-dialog v-model="isShowConfirmPlaySelectedSoundsDialog" width="500" persistent>
       <v-card color="var(--color-card)">
-        <v-card-title class="text-h5">Confirm Dialog</v-card-title>
+        <v-card-title class="text-h5" style="color: var(--color-text)">Confirm Dialog</v-card-title>
         <v-card-text style="color: var(--color-text)">Would you like to continue play selected sound list?</v-card-text>
         <v-divider style="border-color: var(--color-border)"></v-divider>
         <v-card-actions>
@@ -65,6 +65,16 @@
         </v-card-actions>
       </v-card>
     </v-dialog>
+
+    <!-- notification message -->
+    <v-snackbar v-model="isShowNotification" right color="error" light>
+      <span style="color: white">{{ notificationMessage }}</span>
+      <template #action="{ attrs }">
+        <v-btn color="white" icon v-bind="attrs" @click="isShowNotification = false">
+          <v-icon>mdi-close</v-icon>
+        </v-btn>
+      </template>
+    </v-snackbar>
   </div>
 </template>
 
@@ -77,7 +87,9 @@ export default {
     return {
       isDarkMode: false,
       selectedSounds: [],
-      isShowConfirmPlaySelectedSoundsDialog: false
+      isShowConfirmPlaySelectedSoundsDialog: false,
+      isShowNotification: false,
+      notificationMessage: ''
     }
   },
   computed: {
@@ -140,6 +152,14 @@ export default {
      * @return {void}
      */
     addSound(sound) {
+      if (this.selectedSounds.length === 5) {
+        this.notificationMessage = 'You cannot select over 5 sounds!'
+        this.isShowNotification = true
+        setTimeout(() => {
+          this.isShowNotification = false
+        }, 3000)
+        return
+      }
       this.selectedSounds.push(sound)
       this.playSound(sound.id)
     },
