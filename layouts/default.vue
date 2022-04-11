@@ -19,22 +19,25 @@ export default {
     }
   },
   watch: {
-    color(newColor) {
-      if (!newColor) return
-      if (newColor.primary) this.$vuetify.theme.themes.dark.primary = newColor.primary
-      if (newColor.primaryDark) this.$vuetify.theme.themes.dark.primaryDark = newColor.primaryDark
-      if (newColor.secondary) this.$vuetify.theme.themes.dark.secondary = newColor.secondary
-      if (newColor._primary) this.$vuetify.theme.themes.dark._primary = newColor._primary
-      if (newColor._secondary) this.$vuetify.theme.themes.dark._secondary = newColor._secondary
-      if (newColor._accent) this.$vuetify.theme.themes.dark._accent = newColor._accent
-      if (newColor._base) this.$vuetify.theme.themes.dark._base = newColor._base
-      if (newColor._white) this.$vuetify.theme.themes.dark._white = newColor._white
-      if (newColor._text) this.$vuetify.theme.themes.dark._text = newColor._text
-      if (newColor._success) this.$vuetify.theme.themes.dark._success = newColor._success
-      if (newColor._warning) this.$vuetify.theme.themes.dark._warning = newColor._warning
-      if (newColor._error) this.$vuetify.theme.themes.dark._error = newColor._error
-      if (newColor._clickable) this.$vuetify.theme.themes.dark._clickable = newColor._clickable
-      if (newColor._hightLight) this.$vuetify.theme.themes.dark._hightLight = newColor._hightLight
+    color: {
+      deep: true,
+      handler(newColor) {
+        if (!newColor) return
+        if (newColor.primary) this.$vuetify.theme.themes.dark.primary = newColor.primary
+        if (newColor.primaryDark) this.$vuetify.theme.themes.dark.primaryDark = newColor.primaryDark
+        if (newColor.secondary) this.$vuetify.theme.themes.dark.secondary = newColor.secondary
+        if (newColor._primary) this.$vuetify.theme.themes.dark._primary = newColor._primary
+        if (newColor._secondary) this.$vuetify.theme.themes.dark._secondary = newColor._secondary
+        if (newColor._accent) this.$vuetify.theme.themes.dark._accent = newColor._accent
+        if (newColor._base) this.$vuetify.theme.themes.dark._base = newColor._base
+        if (newColor._white) this.$vuetify.theme.themes.dark._white = newColor._white
+        if (newColor._text) this.$vuetify.theme.themes.dark._text = newColor._text
+        if (newColor._success) this.$vuetify.theme.themes.dark._success = newColor._success
+        if (newColor._warning) this.$vuetify.theme.themes.dark._warning = newColor._warning
+        if (newColor._error) this.$vuetify.theme.themes.dark._error = newColor._error
+        if (newColor._clickable) this.$vuetify.theme.themes.dark._clickable = newColor._clickable
+        if (newColor._hightLight) this.$vuetify.theme.themes.dark._hightLight = newColor._hightLight
+      }
     }
   },
   created() {

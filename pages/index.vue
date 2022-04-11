@@ -1,5 +1,6 @@
 <template>
   <div>
+    <!-- dark mode button -->
     <v-tooltip left>
       <template #activator="{ on }">
         <v-btn color="var(--color-text)" absolute top right large icon v-on="on" @click="toggleDarkMode">
@@ -11,6 +12,7 @@
       <span v-else>Dark Mode</span>
     </v-tooltip>
 
+    <!-- selected sound list -->
     <div v-if="!!selectedSounds.length" class="sound__list selected">
       <v-tooltip v-for="(sound, index) in selectedSounds" :key="index" bottom>
         <template #activator="{ on, value: hover }">
@@ -28,6 +30,7 @@
       </v-tooltip>
     </div>
 
+    <!-- sound list -->
     <div class="sound__list">
       <v-tooltip v-for="(sound, index) in sounds" :key="index" bottom>
         <template #activator="{ on, value: hover }">
@@ -40,7 +43,7 @@
             @click="addSound(sound)"
           >
             <v-img :src="sound.imageSrc" :alt="sound.name" width="100" aspect-ratio="1"></v-img>
-            <audio :id="`player-${index}`" loop>
+            <audio :id="`player-${sound.id}`" loop>
               <source :src="sound.soundSrc" />
             </audio>
           </v-card>
@@ -48,6 +51,20 @@
         <span>{{ sound.name }}</span>
       </v-tooltip>
     </div>
+
+    <!-- confirm continue play dialog-->
+    <v-dialog v-model="isShowConfirmPlaySelectedSoundsDialog" width="500" persistent>
+      <v-card>
+        <v-card-title class="text-h5">Confirm Dialog</v-card-title>
+        <v-card-text>Would you like to continue play selected sound list?</v-card-text>
+        <v-divider></v-divider>
+        <v-card-actions>
+          <v-spacer></v-spacer>
+          <v-btn text @click="rejectPlaySelectedSounds">Reject</v-btn>
+          <v-btn color="success" text @click="acceptPlaySelectedSounds">Accept</v-btn>
+        </v-card-actions>
+      </v-card>
+    </v-dialog>
   </div>
 </template>
 
@@ -59,7 +76,8 @@ export default {
   data() {
     return {
       isDarkMode: false,
-      selectedSounds: []
+      selectedSounds: [],
+      isShowConfirmPlaySelectedSoundsDialog: false
     }
   },
   computed: {
@@ -67,7 +85,55 @@ export default {
       return this.$store.getters['sounds/getSounds']
     }
   },
+  watch: {
+    isDarkMode() {
+      setTimeout(() => {
+        this.setColorTheme()
+      }, 100)
+    }
+  },
+  beforeMount() {
+    this.loadDataFromLocalStorage()
+    window.addEventListener('beforeunload', this.saveDataToLocalStorage)
+  },
+  beforeDestroy() {
+    this.saveDataToLocalStorage()
+  },
   methods: {
+    /**
+     * set color theme
+     * @return {void}
+     */
+    setColorTheme() {
+      const color = this.isDarkMode ? { ...THEME.DARK } : { ...THEME.LIGHT }
+      this.$store.dispatch('preferences/updateColor', { color })
+    },
+    /**
+     * change to dark mode or light mode
+     * @return {void}
+     */
+    toggleDarkMode() {
+      this.isDarkMode = !this.isDarkMode
+    },
+    /**
+     * play sound based on id
+     * @param {string} id - sound id
+     * @return {void}
+     */
+    playSound(soundId) {
+      document.getElementById(`player-${soundId}`)?.play()
+    },
+    /**
+     * stop sound based on id
+     * @param {string} id - sound id
+     * @return {void}
+     */
+    stopSound(soundId) {
+      const player = document.getElementById(`player-${soundId}`)
+      if (!player) return
+      player.pause()
+      player.currentTime = 0
+    },
     /**
      * add selected sound to the selected sound list
      * @param {object} sound - sound information
@@ -75,8 +141,7 @@ export default {
      */
     addSound(sound) {
       this.selectedSounds.push(sound)
-
-      document.getElementById(`player-${sound.id}`).play()
+      this.playSound(sound.id)
     },
     /**
      * remove selected sound out the selected sound list
@@ -86,19 +151,59 @@ export default {
     removeSound(sound) {
       const index = this.selectedSounds.findIndex((item) => item.id === sound.id)
       this.selectedSounds.splice(index, 1)
-
-      const player = document.getElementById(`player-${sound.id}`)
-      player.pause()
-      player.currentTime = 0
+      this.stopSound(sound.id)
     },
     /**
-     * change to dark mode or light mode
+     * play all selected sounds
+     * @param {string} id - sound id
      * @return {void}
      */
-    toggleDarkMode() {
-      const color = this.isDarkMode ? { ...THEME.LIGHT } : { ...THEME.DARK }
-      this.$store.dispatch('preferences/updateColor', { color })
-      this.isDarkMode = !this.isDarkMode
+    playSelectedSounds() {
+      this.selectedSounds.forEach((sound) => {
+        this.playSound(sound.id)
+      })
+    },
+    /**
+     * close confirm dialog and play selected sounds
+     * @return {void}
+     */
+    acceptPlaySelectedSounds() {
+      this.isShowConfirmPlaySelectedSoundsDialog = false
+      this.playSelectedSounds()
+    },
+    /**
+     * close confirm dialog and clear selected sounds
+     * @return {void}
+     */
+    rejectPlaySelectedSounds() {
+      this.isShowConfirmPlaySelectedSoundsDialog = false
+      this.selectedSounds = []
+    },
+    /**
+     * load data from local storage
+     * @return {void}
+     */
+    loadDataFromLocalStorage() {
+      try {
+        const data = localStorage.getItem('deep-focus')
+        const { isDarkMode, selectedSoundIds } = data ? JSON.parse(data) : {}
+        this.isDarkMode = isDarkMode ?? false
+        this.selectedSounds = selectedSoundIds ? this.sounds.filter((sound) => selectedSoundIds.includes(sound.id)) : []
+        if (this.selectedSounds.length > 0) this.isShowConfirmPlaySelectedSoundsDialog = true
+      } catch (e) {
+        localStorage.removeItem('deep-focus')
+      }
+    },
+    /**
+     * save data to local storage
+     * @return {void}
+     */
+    saveDataToLocalStorage() {
+      const parsedData = JSON.stringify({
+        isDarkMode: this.isDarkMode,
+        selectedSoundIds: this.selectedSounds.map((sound) => sound.id)
+      })
+      localStorage.setItem('deep-focus', parsedData)
     }
   }
 }
